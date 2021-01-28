@@ -1,3 +1,5 @@
+// moving forward backward stop via infra red remote control
+
 #include <IRremote.h>
 
 const int RECV_PIN = 7;
