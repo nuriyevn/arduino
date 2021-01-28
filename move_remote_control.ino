@@ -1,25 +1,22 @@
 // moving forward backward stop via infra red remote control
+// trying to turn left and right
 
 #include <IRremote.h>
 
 const int RECV_PIN = 7;
-//const int REAR_RIGHT_PIN = 13;
 
 const char MOVE_FORWARD = '+';
 const char STOP_MOVING = 0;
 const char MOVE_BACKWARD = '-';
+const char TURN_LEFT = '>';
+const char TURN_RIGHT = '<';
 
-
-#define IN1 3
-#define IN2 4
-#define IN3 5
-#define IN4 6
-
+#define IN1 3 // MOTOR A LEFT WHEELS
+#define IN2 4 // MOTOR A LEFT WHEELS
+#define IN3 5 // MOTOR B RIGHT WHEELS
+#define IN4 6 // MOTOR B RIGHT WHEELS
 
 IRrecv irrecv(RECV_PIN);
-decode_results results;
-
-
 int  moveAll = STOP_MOVING;
 
 void setup() {
@@ -27,16 +24,12 @@ void setup() {
   Serial.begin(9600);
   irrecv.enableIRIn();
   //irrecv.blink13(true);
-  Serial.println("Hello!");
-
-//  pinMode(REAR_RIGHT_PIN, OUTPUT);
-  
+  Serial.println("Crazy Bus is ready to start!");
 
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
-
   Serial.println("STOPPED");
 }
 
@@ -68,9 +61,45 @@ void loop() {
         digitalWrite(IN3, LOW);
         digitalWrite(IN4, HIGH);
     }
-  }
- 
-  
+    else if (moveAll == TURN_RIGHT)
+    {
+        /*digitalWrite(IN1, LOW);
+        digitalWrite(IN2, LOW);
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, LOW);*/
+        
+        
+        digitalWrite(IN1, HIGH); // LEFT WHEELS FORWARD
+        digitalWrite(IN2, LOW); // LEFT WHEELS FORWARD
+
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, LOW);
+        //delay(1000);
+      
+        //digitalWrite(IN3, LOW); // RIGHT WHEELS BACKWARD
+        //digitalWrite(IN4, HIGH); // RIGHT WHEELS BACKWARD
+        
+        
+    }
+    else if (moveAll == TURN_LEFT)
+    {
+        /*digitalWrite(IN1, LOW);
+        digitalWrite(IN2, LOW);
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, LOW);
+        delay(1000);*/
+      
+        //digitalWrite(IN1, LOW);  // LEFT WHEELS BACKWARD
+        //digitalWrite(IN2, HIGH);  // LEFT WHEELS BACKWARD
+
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, LOW);
+        
+        digitalWrite(IN3, HIGH); // RIGHT WHEELS FORWARD
+        digitalWrite(IN4, LOW); // RIGHT WHEELS FORWARD
+        //delay(1000);
+    }
+  }  
   
   if (irrecv.decode()){
 
@@ -114,9 +143,13 @@ void loop() {
                   break;
               case 0xFF22DD:
                   Serial.println("|<<");
+                  moveAll = TURN_LEFT;
+                  Serial.println("TURN_LEFT");
                   break;
               case 0xFF02FD:
                   Serial.println(">>|");
+                  moveAll = TURN_RIGHT;
+                  Serial.println("TURN_RIGHT");
                   break;
               case 0xFFC23D:
                   Serial.println(">||");
