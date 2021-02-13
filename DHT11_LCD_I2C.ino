@@ -29,7 +29,8 @@ void setup ()
 // Виконання програми
 void loop() {
 
-  lcd.clear (); // очищення дисплея
+  delay(5000);
+
 
 
   //Зчитуємо вологість
@@ -42,6 +43,7 @@ void loop() {
 
   // Провірка чи вдало пройшло зчитування.
 
+  lcd.clear (); // очищення дисплея
   if (isnan(h) || isnan(t)) {
     lcd.setCursor (1,0);
     lcd.println("Can not print");
@@ -57,5 +59,5 @@ void loop() {
     lcd.print (t);
   }
   
-  delay(1000);
+
 }
