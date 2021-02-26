@@ -1,14 +1,36 @@
+/*char data = 0;
+
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(11, OUTPUT);
+}
+
+
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if (Serial.available() > 0) 
+  {
+    data = Serial.read();
+    Serial.print(data);
+    Serial.print("\n");
+    if (data == "F")
+    {
+      digitalWrite(11, HIGH);
+    }
+    else if (data == "B")
+    {
+      digitalWrite(11, LOW);
+    }
+  }
+
+}*/
+
+
 // moving forward, backward, left, right, stop via infra red remote control
 #include <IRremote.h> // 2.8.1  required - looks like v3.0.0 does not work
-
-// For Bluetooth
-#include <SoftwareSerial.h>
-SoftwareSerial MyBlue(2, 3); // RX | TX 
-int flag = 0;
-int BLUETOOTH_LED_PIN = 12;
-
-
-
 
 const int RECV_PIN = 7;
 
@@ -18,10 +40,16 @@ const char MOVE_BACKWARD = '-';
 const char TURN_LEFT = '>';
 const char TURN_RIGHT = '<';
 
+char code;
+
+#define ENA 2 
 #define IN1 3 // MOTOR A LEFT WHEELS
 #define IN2 4 // MOTOR A LEFT WHEELS
 #define IN3 5 // MOTOR B RIGHT WHEELS
 #define IN4 6 // MOTOR B RIGHT WHEELS
+#define ENB 8
+
+
 
 const int red_light_pin= 11;
 const int green_light_pin = 10;
@@ -65,20 +93,16 @@ void RGB_color_anode(int red_light_value, int green_light_value, int blue_light_
 void setup() {
  
   Serial.begin(9600);
-
-
-  MyBlue.begin(9600); 
-  pinMode(BLUETOOTH_LED_PIN, OUTPUT); 
-
- 
-  irrecv.enableIRIn();
+  //irrecv.enableIRIn();
   //irrecv.blink13(true);
   Serial.println("Crazy Bus is ready to start!");
 
+  pinMode(ENA, OUTPUT);
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
+  pinMode(ENB, OUTPUT);
 
   pinMode(red_light_pin, OUTPUT);
   pinMode(green_light_pin, OUTPUT);
@@ -87,25 +111,117 @@ void setup() {
   Serial.println("STOPPED");
 }
 
-void loop() {
-  
-  if (MyBlue.available()) 
-    flag = MyBlue.read(); 
-
-  
-  if (flag == 'F') 
-  { 
-    digitalWrite(BLUETOOTH_LED_PIN, HIGH); 
-    Serial.println("LED On"); 
-  } 
-  else if (flag == 'B') 
-  { 
-    digitalWrite(BLUETOOTH_LED_PIN, HIGH); 
-    Serial.println("LED Off"); 
-  } 
 
 
-  
+void loop()
+{
+  // якщо прийшла команда із смартфона
+  if(Serial.available()){
+  //зчитуємо дані
+    code = Serial.read() ; 
+     
+ 
+     if(code == 'F'){   //ЯКЩО ПРИЙШЛА КОМАНДА 'F'=  РУХАЄМОСЬ ВПЕРЕД
+      RGB_color_anode(0, 255, 0); // Green
+      
+      digitalWrite(IN1, HIGH); //Встановлює  напрям обертання двигунів  ВПЕРЕД Каналу А
+      digitalWrite(IN2, LOW);   //
+      analogWrite(ENA, 255);   // двигуни на Каналі А крутяться з максимальною швидкістю
+      
+      digitalWrite(IN3, LOW); //Встановлює  напрям обертання двигунів  ВПЕРЕД  Каналу B
+      digitalWrite(IN4, HIGH);   //
+      analogWrite(ENB, 255);   // двигуни на Каналі В крутяться з максимальною швидкістю
+    }
+     if(code == 'G'){   //ЯКЩО ПРИЙШЛА КОМАНДА 'G'=  РУХАЄМОСЬ  ЛІВОРУЧ ВПЕРЕД
+      RGB_color_anode(0, 102, 102); // Biruza
+      digitalWrite(IN1, HIGH); //Встановлює  напрям обертання двигунів  ВПЕРЕД Каналу А
+      digitalWrite(IN2, LOW);   //
+      analogWrite(ENA, 255);   // двигуни на Каналі А крутяться з максимальною швидкістю
+      
+      digitalWrite(IN3, LOW); //Встановлює  напрям обертання двигунів  ВПЕРЕД  Каналу B
+      digitalWrite(IN4, HIGH); //
+      analogWrite(ENB, 40);   // двигуни на Каналі В крутяться з мінімальною швидкістю
+    }
+    
+     if(code == 'L'){  // ЯКЩО ПРИЙШЛА КОМАНДА'L'= РУХАЄМОСЬ ЛІВОРУЧ
+      RGB_color_anode(0, 0, 255); // Blue
+      digitalWrite(IN1, HIGH); //Встановлює  напрям обертання двигунів  ВПЕРЕД  Каналу А
+      digitalWrite(IN2, LOW);   //
+      analogWrite(ENA, 127);   // двигуни  Каналу B обертаються на половину швидкості
+     
+      digitalWrite(IN3, HIGH); //Встановлює  напрям обертання двигунів НАЗАД у КаналІ B
+      digitalWrite(IN4, LOW);  //
+      analogWrite(ENB, 127);   // двигуни  Каналу B обертаються на половину швидкості 127
+    }
+
+    if(code == 'I'){   //ЯКЩО ПРИЙШЛА КОМАНДА 'I'=  РУХАЄМОСЬ  ПРАВОРУЧ ВПЕРЕД
+      RGB_color_anode(102, 102, 0); // olive
+      digitalWrite(IN1, HIGH); //Встановлює  напрям обертання двигунів  ВПЕРЕД Каналу А
+      digitalWrite(IN2, LOW);   //
+      analogWrite(ENA, 40);   // двигуни на Каналі А крутяться з мінімальною швидкістю 40
+      
+      digitalWrite(IN3, LOW); //Встановлює  напрям обертання двигунів  ВПЕРЕД  Каналу B
+      digitalWrite(IN4, HIGH); //
+      analogWrite(ENB, 255);   // двигуни на Каналі В крутяться з мінімальною швидкістю
+    }
+    
+     if(code == 'R'){  //ЯКЩО ПРИЙШЛА КОМАНДА 'R'= РУХАЄМОСЬ ПРАВОРУЧ
+      RGB_color_anode(255, 255, 0); // Yellow
+      digitalWrite(IN1, LOW); //Встановлює бертання двигунів НАЗАД Каналу А
+      digitalWrite(IN2, HIGH);   //
+      analogWrite(ENA, 127);   // двигун на Каналі А  обертається на половину швидкості
+     
+      digitalWrite (IN3, LOW );//Встановлює  напрям обертання двигунів  ВПЕРЕД у КаналІ B
+      digitalWrite (IN4, HIGH ); 
+      analogWrite(ENB, 127);   // двигун на Каналі В обертається на половину швидкості 127
+    }
+    
+     if(code == 'B'){   // ЯКЩО ПРИЙШЛА КОМАНДА 'B'= РУХАЄМОСЬ НАЗАД
+       RGB_color_anode(255, 0, 0); // Red
+       digitalWrite (IN2, HIGH);//Встановлює бертання двигунів НАЗАД Каналу А
+       digitalWrite (IN1, LOW);
+       analogWrite(ENA, 255);   // двигуни на Каналі А крутяться з максимальною швидкістю 255
+       
+       digitalWrite (IN4, LOW);//Встановлює  напрям обертання двигунів НАЗАД у КаналІ B
+       digitalWrite (IN3, HIGH);
+      analogWrite(ENB, 255);   // двигуни на Каналі В крутяться з максимальною швидкістю 255
+    }
+
+     if(code == 'H'){   // ЯКЩО ПРИЙШЛА КОМАНДА 'H'= РУХАЄМОСЬ ЛІВОРУЧ НАЗАД
+      // Робот рухається НАЗАД
+       RGB_color_anode(51, 0, 102); // Violet
+       digitalWrite (IN2, HIGH);//Встановлює напрям обертання двигунів НАЗАД Каналу А
+       digitalWrite (IN1, LOW);
+       analogWrite(ENA, 255);   // двигуни на Каналі А крутяться з максимальною швидкістю 255
+       
+       digitalWrite (IN4, LOW);//Встановлює  напрям обертання двигунів НАЗАД у КаналІ B
+       digitalWrite (IN3, HIGH);
+       analogWrite(ENB, 40);   // двигуни на КаналІ B крутяться з мінімальною швидкістю 40
+    }
+    
+
+    if(code == 'J'){   // ЯКЩО ПРИЙШЛА КОМАНДА 'J' = РУХАЄМОСЬ ПРАВОРУЧ НАЗАД
+       RGB_color_anode(102, 51, 0); // Orange
+       digitalWrite (IN2, HIGH);//Встановлює напрям обертання двигунів НАЗАД Каналу А
+       digitalWrite (IN1, LOW);
+       analogWrite(ENA, 40); // двигуни на Каналі А крутяться з мінімальною швидкістю 40
+       
+       digitalWrite (IN4, LOW);//Встановлює  напрям обертання двигунів НАЗАД у КаналІ B
+       digitalWrite (IN3, HIGH);
+       analogWrite(ENB, 255);  // двигуни на КаналІ B крутяться з максимальною швидкістю 255
+    }
+    if(code == 'S'){  // ЯКЩО ПРИЙШЛА КОМАНДА 'S'= СТОП
+      analogWrite(ENA, 0);  //СТОП  ДВИГУНИ каналу  А
+      analogWrite(ENB, 0);  //СТОП  ДВИГУНИ каналу  B
+    }
+  }
+  delay(10);
+}
+
+
+
+
+/*void loop() {
   if (moveAll == STOP_MOVING)
   {
         RGB_color_anode(0,0, 0); // Nothing
@@ -134,18 +250,11 @@ void loop() {
         digitalWrite(IN1, LOW);
         digitalWrite(IN2, HIGH);
         digitalWrite(IN3, LOW);
-        digitalWrite(IN4, HIGH);
-
-        
+        digitalWrite(IN4, HIGH);       
     }
     else if (moveAll == TURN_LEFT)
     {
-        /*digitalWrite(IN1, LOW);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, LOW);
-        delay(1000);*/
-      
+     
         //digitalWrite(IN1, LOW);  // LEFT WHEELS BACKWARD
         //digitalWrite(IN2, HIGH);  // LEFT WHEELS BACKWARD
 
@@ -162,16 +271,9 @@ void loop() {
         digitalWrite(IN3, HIGH); // RIGHT WHEELS FORWARD
         digitalWrite(IN4, LOW); // RIGHT WHEELS FORWARD
         delay(350);
-        
-        
-        
     }
     else if (moveAll == TURN_RIGHT)
     {
-        /*digitalWrite(IN1, LOW);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, LOW);*/
         RGB_color_anode(255, 255, 0); // Yellow
         digitalWrite(IN1, HIGH); // LEFT WHEELS FORWARD
         digitalWrite(IN2, LOW); // LEFT WHEELS FORWARD
@@ -184,12 +286,9 @@ void loop() {
         digitalWrite(IN3, HIGH);
         digitalWrite(IN4, LOW);
         delay(50);
-        
-        
         //digitalWrite(IN3, LOW); // RIGHT WHEELS BACKWARD
         //digitalWrite(IN4, HIGH); // RIGHT WHEELS BACKWARD
     }
-    
   }  
   
   if (irrecv.decode()){
@@ -287,3 +386,4 @@ void loop() {
         irrecv.resume();
     }
 }
+*/
