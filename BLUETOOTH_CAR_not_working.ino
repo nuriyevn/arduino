@@ -30,7 +30,7 @@ void loop() {
 
 
 // moving forward, backward, left, right, stop via infra red remote control
-#include <IRremote.h> // 2.8.1  required - looks like v3.0.0 does not work
+//#include <IRremote.h> // 2.8.1  required - looks like v3.0.0 does not work
 
 const int RECV_PIN = 7;
 
@@ -42,20 +42,24 @@ const char TURN_RIGHT = '<';
 
 char code;
 
-#define ENA 2 
-#define IN1 3 // MOTOR A LEFT WHEELS
-#define IN2 4 // MOTOR A LEFT WHEELS
-#define IN3 5 // MOTOR B RIGHT WHEELS
-#define IN4 6 // MOTOR B RIGHT WHEELS
-#define ENB 8
+//канал А-ПРАВІ ДВИГУНИ
+#define ENA 5 
+#define IN1 6 // MOTOR A LEFT WHEELS
+#define IN2 7 // MOTOR A LEFT WHEELS
+
+//канал В- ЛІВІ ДВИГУНИ
+
+#define IN3 8 // MOTOR B RIGHT WHEELS
+#define IN4 9 // MOTOR B RIGHT WHEELS
+#define ENB 10
 
 
 
-const int red_light_pin= 11;
-const int green_light_pin = 10;
-const int blue_light_pin = 9;
+const int red_light_pin= 13;
+const int green_light_pin = 12;
+const int blue_light_pin = 11;
 
-IRrecv irrecv(RECV_PIN);
+//IRrecv irrecv(RECV_PIN);
 int  moveAll = STOP_MOVING;
 
 /*
