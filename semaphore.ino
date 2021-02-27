@@ -14,26 +14,22 @@ void setup ()    //  Встановлюємо режим роботи цифро
   pinMode (yellowPin, OUTPUT);
   pinMode (greenPin, OUTPUT);
 }
+
+void light_up(int pin, int d)
+{
+    digitalWrite (pin, HIGH); // вмикаємо LED,на контакт 12 
+    //подаєтья високий рівень//напруги 5В
+    delay (d);    // пауза 1 секунда, під час якої світлодіод LED //світиться
+    digitalWrite (pin, LOW);// вимикаємо світлодіод LED, на контакт 12 
+}
+
 // виконання програми
 void loop ()  
 {
   while(true){
-    digitalWrite (redPin, HIGH); // вмикаємо LED,на контакт 12 
-    //подаєтья високий рівень//напруги 5В
-    delay (5000);    // пауза 1 секунда, під час якої світлодіод LED //світиться
-    digitalWrite (redPin, LOW);// вимикаємо світлодіод LED, на контакт 12 
-    // подаєтья
-    
-    digitalWrite (yellowPin, HIGH);
-    delay (2000);
-    digitalWrite (yellowPin, LOW);
-    
-    digitalWrite (greenPin, HIGH);
-    delay (5000);
-    digitalWrite (greenPin, LOW);
-    
-    digitalWrite (yellowPin, HIGH);
-    delay (2000);
-    digitalWrite (yellowPin, LOW);
+    light_up(redPin, 1000);
+    light_up(yellowPin, 1000);
+    light_up(greenPin, 1000);
+    light_up(yellowPin, 1000);
   }
 }
