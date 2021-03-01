@@ -29,7 +29,7 @@ void setup ()
 // Виконання програми
 void loop() {
 
-  delay(5000);
+  delay(1000);
 
 
 
@@ -57,6 +57,12 @@ void loop() {
     lcd.print ("Temp: ");
     lcd.setCursor (7,1);
     lcd.print (t);
+    Serial.print("\n");
+    Serial.print(t);
+    Serial.print("\n");
+    Serial.print(h);
+    Serial.print("\n");
+    
   }
   
 
