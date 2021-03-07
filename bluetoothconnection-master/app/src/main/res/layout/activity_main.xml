@@ -1,0 +1,154 @@
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".MainActivity">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <Button
+            android:id="@+id/buttonStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editText"
+            android:onClick="onClickStart"
+            android:text="Begin" />
+
+        <Button
+            android:id="@+id/buttonSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_toEndOf="@+id/buttonStart"
+            android:layout_toRightOf="@+id/buttonStart"
+            android:onClick="onClickSend"
+            android:text="Send" />
+
+        <Button
+            android:id="@+id/buttonStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_toEndOf="@+id/buttonSend"
+            android:layout_toRightOf="@+id/buttonSend"
+            android:onClick="onClickStop"
+            android:tag="S"
+            android:text="Stop" />
+
+        <Button
+            android:id="@+id/buttonClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_toEndOf="@+id/buttonStop"
+            android:layout_toRightOf="@+id/buttonStop"
+            android:onClick="onClickClear"
+            android:text="Clear" />
+
+        <ScrollView
+            android:id="@+id/ScrollView01"
+            android:layout_width="373dp"
+            android:layout_height="284dp"
+            android:layout_below="@+id/buttonSend"
+            android:layout_marginTop="322dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/buttonSend"
+                android:layout_alignEnd="@+id/editText"
+                android:layout_alignRight="@+id/editText"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:singleLine="false" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/buttonL"
+            android:layout_width="108dp"
+            android:layout_height="88dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-1dp"
+            android:layout_marginLeft="-1dp"
+            android:layout_marginTop="224dp"
+            android:onClick="clickButton"
+            android:text="L" />
+
+        <Button
+            android:id="@+id/buttonF"
+            android:layout_width="111dp"
+            android:layout_height="88dp"
+            android:layout_below="@+id/buttonSend"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="126dp"
+            android:layout_marginLeft="126dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginRight="140dp"
+            android:onClick="clickButton"
+            android:text="F" />
+
+        <Button
+            android:id="@+id/buttonS"
+            android:layout_width="111dp"
+            android:layout_height="88dp"
+            android:layout_below="@+id/buttonSend"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="140dp"
+            android:onClick="clickButton"
+            android:text="S" />
+
+        <Button
+            android:id="@+id/buttonR"
+            android:layout_width="101dp"
+            android:layout_height="101dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="231dp"
+            android:layout_marginLeft="231dp"
+            android:layout_marginTop="231dp"
+            android:onClick="clickButton"
+            android:text="R" />
+
+        <Button
+            android:id="@+id/buttonB"
+            android:layout_width="114dp"
+            android:layout_height="115dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="285dp"
+            android:layout_marginRight="150dp"
+            android:layout_marginBottom="315dp"
+            android:onClick="clickButton"
+            android:text="B" />
+
+    </RelativeLayout>
+
